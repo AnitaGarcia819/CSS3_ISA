@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1449012788 source:c:\users\anarts\documents\github\css3_isa\isa\assembly_program.cpp
+	<iostream>
+	<cassert>
+	"assembly_program.h"
+
+1449012836 c:\users\anarts\documents\github\css3_isa\isa\assembly_program.h
+	<iostream>
+	<cstddef>
+
+1449011924 source:c:\users\anarts\documents\github\css3_isa\isa\assemblydriver.cpp
+	"assembly_program.h"
+

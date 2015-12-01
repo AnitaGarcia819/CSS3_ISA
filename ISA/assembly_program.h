@@ -1,18 +1,21 @@
+#ifndef ASSEMBLY_PROGRAM_H
+#define ASSEMBLY_PROGRAM_H
 #include <iostream>
-
+#include <cstddef>
+using namespace std;
 class Program{
 
     private:
-        size_t REGISTER_CAPACITY = 16;
-        size_t MEMORY_CAPACITY = 32;
-        size_t used_memory = 0;
-        size_t used_int = 0;
+        static const size_t REGISTER_CAPACITY = 16;
+        static const size_t MEMORY_CAPACITY = 32;
+        unsigned int used_memory;
+        unsigned int used_int;
         int registers[REGISTER_CAPACITY];
         int memory[MEMORY_CAPACITY];
 
     public:
         Program();
-        void convert();
+        void convert(string s);
         void execute();
         // Data Movement
         void get ( string r, string m );    // may be changed to bool for error tracking
@@ -37,9 +40,9 @@ class Program{
         bool equal(string r1, string m1, string m2);
 
         // Transfer Control
-        void in(string register_address)
+        void in(string register_address);
         void out(string register_address);
-        void goto(string func_name);
+        void goTo(string func_name);
         void whif(string func_name);
 
         // Special Opcode
@@ -49,3 +52,4 @@ class Program{
         void clearm(string m1);
         void halt();
 };
+#endif // ASSEMBLY_PROGRAM_H

@@ -31,6 +31,7 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="AssemblyDriver.cpp" />
 		<Unit filename="assembly_program.cpp" />
 		<Unit filename="assembly_program.h" />
 		<Unit filename="isa.txt" />
