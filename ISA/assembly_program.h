@@ -15,7 +15,7 @@ class Program{
 
     public:
         Program();
-        void convert(string s);
+        int convert(string s);
         void execute();
         // Data Movement
         void get ( string r, string m );    // may be changed to bool for error tracking

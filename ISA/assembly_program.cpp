@@ -1,17 +1,21 @@
 #include <iostream>
 #include <cassert>
+#include <cstdlib>
 #include "assembly_program.h"
 using namespace std;
 Program::Program()
 {
 
 }
-/*void Program::convert(string s)
+
+int Program::convert(string s)
 {
-  string val = s.substr(1);
-  int new_val = atoi(val.c_str());
-  //return new_val;
+    string val = s.substr(1);
+    int new_val = atoi(val.c_str());
+    return new_val;
 }
+
+/*
 void Program::execute()
 {
 
