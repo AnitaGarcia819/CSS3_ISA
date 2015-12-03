@@ -7,11 +7,11 @@ Program::Program()
 {
     used_memory = 0;
     used_registers = 0;
-    for(int i = 0; i < MEMORY_CAPACITY; i++)
+    for(unsigned int i = 0; i < MEMORY_CAPACITY; i++)
     {
         pairMemory[i] = make_pair(true, 0);
     }
-    for(int i = 0; i <REGISTER_CAPACITY; i++)
+    for(unsigned int i = 0; i <REGISTER_CAPACITY; i++)
     {
         pairRegisters[i] = make_pair(true, 0);
     }
@@ -143,51 +143,99 @@ void Program::subm(string r1, string m1, string m2)
 {
 
 }
-
 //arithmetic functions
 void Program::multr(string r3, string r2, string r1)
 {
 	//convert r1 and r2
-	//r3 = r1* r2;
+	int val1 = convert(r1);
+	int val2 = convert(r2);
+	int val3 = convert(r3);
+
+	//makes sure that the register location is valid and available
+	assert(isValidRegister(val3));
+	assert(isAvailableRegister(Val3));
+	pairRegisters[val3].second = val1 * val2;
+	pairRegisters[val3].first = false; //not available anymore
 }
 void Program::multm(string r3, string m1, string m2)
 {
 	//convert m1 and m2 to ints
-//r3 = m1 * m2;
+	int val1 = convert(m1);
+	int val2 = convert(m2);
+	int val3 = convert(r3);
+
+	assert(isValidMemory(val3));
+	assert(isAvailableRegister(val3));
+    pairRegisters[val3].second = m1 * m2;
+    pairRegisters[val3].first = false; //not available anymore.
 }
 void Program::divr(string r1, string r2, string r3)
 {
 	//convert r1 and r2 to ints
-	// r3 = r1/r2;
+	int val1 = convert(r1);
+	int val2 = convert(r2);
+	int val3 = convert(r3);
+
+	assert(isValidRegister(val3));
+	assert(isAvailableRegister(Val3));
+	pairRegisters[val3].second = val1 / val2;
+	pairRegisters[val3].first = false; // not available anymore.
+
 }
 void Program::divm(string r1, string m1, string m2)
 {
 	//convert m1 and m2
+	int val1 = convert(m1);
+	int val2 = convert(m2);
+	int val3 = convert(r1);
+
 	//r1 = m1/m2;
+	assert(isValidRegsiter(val3));
+	assert(isAvailableRegister(val3));
+	pairRegisters[val3].second = val1/val2;
+	pairRegisters[val3].first = false; // not available anymore.
 }
 
 void Program::incr(string r1) //increment r1(index)
 {
 	//convert r1 to int;
-	//registers[r1]+=1;
+	int val1 = convert(r1);
+	assert(isAvailableRegister(val1));
+	assert(isValidRegister(val1));
+	pairRegisters[val1].second += 1;
+    //you need to set it to no available anymore and make sure that you can still increment +1 whenever you want.
 }
 
 void Program::decr(string r1)
 {
 	//convert r1 to int;
-	//register[r1] -=1;
+	int val1 = convert(r1);
+	assert(isAvailableRegister(val1));
+	assert(isValidRegister(val1));
+	pairRegisters[val1].second -= 1;
+    //you need to set it to no available anymore and make sure that you can still increment +1 whenever you want.
 }
 void Program::neg(string r1) //negates all values in register
 {
 	//convert r1 to int
-	// r1 *= -1;
+	int val1 = convert (r1);
+	assert(isAvailable(val1));
+	assert(isValid(val1));
+	pairRegisters[val1] *= -1;
 }
 bool Program::less(string r1, string m1, string m2)
 {
 	//convert m1, and m2 to ints
-//	int memory1_index = convert( m1);
+    int memory1_index = convert( m1);
 	int memory2_index = convert(m2);
-	if( memory[memory1_index] < memory[memory2_index])
+	//int register_index = convert(r1);
+	assert(isAvailableMemory(memory1_index));
+	assert(isValidMemory(memory1_index));
+	assert(isAvailableMemory(memory2_index));
+	assert(isValidMemory(memory2_index));
+	//you need to ask  if you are storing the value here in this function or just returning a boolean.
+	//assert(isAvailableRegister(register_index));
+	if( pairMemory[memory1_index].second < pairMemory[memory2_index].second)
 		return true;
 	else
 		return false;
@@ -195,9 +243,18 @@ bool Program::less(string r1, string m1, string m2)
 bool Program::great(string r1, string m1, string m2)
 {
 	//convert m1, and m2 to ints
-	//int memory1_index = convert( m1);
-	//int memory2_index = convert(m2);
-	if( memory[memory1_index] > memory[memory2_index])
+	int memory1_index = convert( m1);
+	int memory2_index = convert(m2);
+	//int register_index = convert(r1);
+
+	assert(isAvailableMemory(memory1_index));
+	assert(isValidMemory(memory1_index));
+	assert(isAvailableMemory(memory2_index));
+	assert(isValidMemory(memory2_index));
+	//you need to ask  if you are storing the value here in this function or just returning a boolean.
+	//assert(isAvailableRegister(register_index));
+
+	if( pairMemory[memory1_index].second > pairMemory[memory2_index].second)
 		return true;
 	else
 		return false;
@@ -206,9 +263,11 @@ bool Program::great(string r1, string m1, string m2)
 bool Program::equal(string r1, string m1, string m2)
 {
 	//convert m1, and m2 to ints
-	//int memory1_index = convert( m1);
-	//int memory2_index = convert(m2);
-	if( memory[memory1_index] == memory[memory2_index])
+	int memory1_index = convert( m1);
+	int memory2_index = convert(m2);
+	assert(isAvailableMemory(memory1_index));
+	assert(isValidMemory(memory2_index));
+	if( memory[memory1_index].second == memory[memory2_index].second)
 		return true;
 	else
 		return false;
