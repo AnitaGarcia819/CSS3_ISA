@@ -5,8 +5,18 @@
 using namespace std;
 Program::Program()
 {
-
+    used_memory = 0;
+    used_registers = 0;
+    for(int i = 0; i < MEMORY_CAPACITY; i++)
+    {
+        pairMemory[i] = make_pair(true, 0);
+    }
+    for(int i = 0; i <REGISTER_CAPACITY; i++)
+    {
+        pairRegisters[i] = make_pair(true, 0);
+    }
 }
+
 
 int Program::convert(string s)
 {
@@ -111,7 +121,6 @@ void Program::subm(string r1, string m1, string m2)
   registers[reg1] = memory[memo1] - memory[memo2];
 }
 
-
 void Program::move(string m2, string m1)
 {
 
@@ -120,9 +129,11 @@ void Program::addr(string r3, string r1, string r2)
 {
 
 }
+
+//ADDM R6, M1, M2
 void Program::addm(string r1, string m1, string m2)
 {
-
+    //check that m1 and m2 are
 }
 void Program::subr(string r3, string r1, string r2)
 {
@@ -273,6 +284,34 @@ void Program::clearm(string m1)
     // check if m1 is present
     assert(memory_index < MEMORY_CAPACITY);
     memory[memory_index] = 0;
+}
+bool Program::isValidMemory(int val)
+{
+    if(val < used_memory)
+        return true;
+    else
+        return false;
+}
+bool Program::isValidRegister(int val)
+{
+    if(val < used_registers)
+        return true;
+    else
+        return false;
+}
+bool Program::isAvailableMemory(int val)
+{
+    if (pairMemory[val].first == true)
+        return true;
+    else
+        return false;
+}
+bool Program::isAvailableRegister(int val)
+{
+    if(pairRegisters[val].first == true)
+        return true;
+    else
+        return false;
 }
 void Program::halt()
 {
