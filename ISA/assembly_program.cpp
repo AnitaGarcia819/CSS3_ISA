@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cassert>
 #include <cstdlib>
+#include <cmath>
 #include "assembly_program.h"
 using namespace std;
 Program::Program()
@@ -59,14 +60,14 @@ int Program::convert(string s)
     }
     // An error message can be added here...
     // "the value entered is invalid, + string s"
+    //TODO: fix warning issue here
 }
-
 void Program::execute(){};
 
 void Program::get(string r, string m)
 {
-  int reg = convert(r);
-  int memo = convert(m);
+  unsigned int reg = convert(r);
+  unsigned int memo = convert(m);
   assert(isValidRegister(reg));
   assert(isValidMemory(memo));
   pairRegisters[reg].second = pairMemory[memo].second;
@@ -190,6 +191,7 @@ void Program::subm(string r1, string m1, string m2)
 {
 
 }
+*/
 //arithmetic functions
 void Program::multr(string r3, string r2, string r1)
 {
@@ -200,7 +202,7 @@ void Program::multr(string r3, string r2, string r1)
 
 	//makes sure that the register location is valid and available
 	assert(isValidRegister(val3));
-	assert(isAvailableRegister(Val3));
+	assert(isAvailableRegister(val3));
 	pairRegisters[val3].second = val1 * val2;
 	pairRegisters[val3].first = false; //not available anymore
 }
@@ -213,7 +215,7 @@ void Program::multm(string r3, string m1, string m2)
 
 	assert(isValidMemory(val3));
 	assert(isAvailableRegister(val3));
-    pairRegisters[val3].second = m1 * m2;
+    pairRegisters[val3].second = val1*val2;
     pairRegisters[val3].first = false; //not available anymore.
 }
 void Program::divr(string r1, string r2, string r3)
@@ -224,7 +226,7 @@ void Program::divr(string r1, string r2, string r3)
 	int val3 = convert(r3);
 
 	assert(isValidRegister(val3));
-	assert(isAvailableRegister(Val3));
+	assert(isAvailableRegister(val3));
 	pairRegisters[val3].second = val1 / val2;
 	pairRegisters[val3].first = false; // not available anymore.
 
@@ -237,7 +239,7 @@ void Program::divm(string r1, string m1, string m2)
 	int val3 = convert(r1);
 
 	//r1 = m1/m2;
-	assert(isValidRegsiter(val3));
+	assert(isValidRegister(val3));
 	assert(isAvailableRegister(val3));
 	pairRegisters[val3].second = val1/val2;
 	pairRegisters[val3].first = false; // not available anymore.
@@ -266,9 +268,9 @@ void Program::neg(string r1) //negates all values in register
 {
 	//convert r1 to int
 	int val1 = convert (r1);
-	assert(isAvailable(val1));
-	assert(isValid(val1));
-	pairRegisters[val1] *= -1;
+	assert(isAvailableRegister(val1));
+	assert(isValidRegister(val1));
+	pairRegisters[val1].second *= -1;
 }
 bool Program::less(string r1, string m1, string m2)
 {
@@ -314,7 +316,7 @@ bool Program::equal(string r1, string m1, string m2)
 	int memory2_index = convert(m2);
 	assert(isAvailableMemory(memory1_index));
 	assert(isValidMemory(memory2_index));
-	if( memory[memory1_index].second == memory[memory2_index].second)
+	if( pairMemory[memory1_index].second == pairMemory[memory2_index].second)
 		return true;
 	else
 		return false;
@@ -323,26 +325,26 @@ bool Program::equal(string r1, string m1, string m2)
 void Program::in(string register_address)
 {
     // check if register is available
-    if(used_register < REGISTER_CAPACITY)
+    if(used_registers < REGISTER_CAPACITY)
     {
         int register_index = convert(register_address);
         int input;
         cout << "Enter your input: " << endl;
         cin >> input;
-        registers[register_address] = input;
+        pairRegisters[register_index].second = input;
     }
     else
         cout << "No more register space" << endl;
 }
 
-void out(string register_address)
+void Program::out(string register_address)
 {
-    assert(register_address < REGISTER_CAPACITY);  // Checks user input
-    int register_index = convert(register_address);
+    unsigned int register_index = convert(register_address);
+    assert(register_index < REGISTER_CAPACITY);  // Checks user input
     cout <<  "value at register " << register_address << " is: ";
-    cout << registers[register_index];
+    cout << pairRegisters[register_index].second << endl;
 }
-void Program::goto(string func_name)
+void Program::goTo(string func_name)
 {
 
 }
@@ -353,11 +355,11 @@ void Program::whif(string func_name)
 // Special Opcode
 void Program::peek(string memory_address)
 {
-	int memory_index = convert(memory_address);
-	assert(memory_address < MEMORY_CAPACITY);
-	cout << memory[memory_index] << endl;
+	unsigned int memory_index = convert(memory_address);
+	assert(memory_index < MEMORY_CAPACITY);
+	cout << pairMemory[memory_index].second << endl;
 }
-void Program::sort(string m1, string num)
+/*void Program::sort(string m1, string num)
 {
     // converts m1 to int
     // checks if it is valid
@@ -373,54 +375,55 @@ void Program::sort(string m1, string num)
         memory[i] = *it;
         it++;
     }
-}
+} */
 void Program::clearr(string r1)
 {
     // convert r1 to int
-	int register_index = convert(r1);
+	unsigned int register_index = convert(r1);
     // check if r1 is present
     assert(register_index < REGISTER_CAPACITY);
     // clear item at
-    registers[register_index] = 0;
+    pairRegisters[register_index].second = 0;
+    pairRegisters[register_index].first = true;
 }
 void Program::clearm(string m1)
 {
     // convert m1 to int
-    int memory_index = convert(m1);
+    unsigned int memory_index = convert(m1);
     // check if m1 is present
     assert(memory_index < MEMORY_CAPACITY);
-    memory[memory_index] = 0;
+    pairMemory[memory_index].second = 0;
+    pairRegisters[memory_index].first = true;
+
 }
 
 void Program::halt()
 {
     exit(0);
 }
-*/
 
-
-bool Program::isValidMemory(int val)
+bool Program::isValidMemory(unsigned int val)
 {
     if(val < used_memory)
         return true;
     else
         return false;
 }
-bool Program::isValidRegister(int val)
+bool Program::isValidRegister(unsigned int val)
 {
     if(val < used_registers)
         return true;
     else
         return false;
 }
-bool Program::isAvailableMemory(int val)
+bool Program::isAvailableMemory(unsigned int val)
 {
     if (pairMemory[val].first == true)
         return true;
     else
         return false;
 }
-bool Program::isAvailableRegister(int val)
+bool Program::isAvailableRegister(unsigned int val)
 {
     if(pairRegisters[val].first == true)
         return true;
