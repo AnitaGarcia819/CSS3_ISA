@@ -29,6 +29,7 @@ class Program{
         // Data Movement
         void get ( string r, string m );    // may be changed to bool for error tracking
         void set ( string m, string r );
+        //Summary: sets value from regsiter into memory address;
         void swap ( string r1, string r2 );
 
         // Arithmetic
