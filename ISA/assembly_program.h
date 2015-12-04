@@ -17,6 +17,13 @@ class Program{
 
     public:
         Program();
+        void setMemo(int pos, int val);
+        void setReg(int pos, int val);
+        pair<bool, int> retPairM(int pos);
+        pair<bool, int> retPairR(int pos);
+
+        void getu(int pos, int val);
+        void receive(string r, int val);
         int convert(string s);
         void execute();
         // Data Movement
@@ -59,7 +66,7 @@ class Program{
         // Precondition: Val represents an index location.
         // Summary: checking to see if that memory exists
         // Postcondition: returns true or false depending if its valid.
-        bool isValidRegisters(int val);
+        bool isValidRegister(int val);
         // Precondition: Val represents an index location.
         // Summary: checking to see if that register exists
         // Postcondition: returns true or false depending if its valid.

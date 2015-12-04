@@ -17,12 +17,66 @@ Program::Program()
     }
 }
 
+void Program::setMemo(int pos, int val)
+{
+    pairMemory[pos].second = val;
+    pairMemory[pos].first = false;
+}
+
+void Program::setReg(int pos, int val)
+{
+    pairRegisters[pos].second = val;
+    pairRegisters[pos].first = false;
+}
+
+pair<bool, int> Program::retPairM(int pos)
+{
+    pair<bool, int> aPair;
+    aPair = pairMemory[pos];
+    return aPair;
+}
+
+pair<bool, int> Program::retPairR(int pos)
+{
+    pair<bool, int> aPair;
+    aPair = pairRegisters[pos];
+    return aPair;
+}
 
 int Program::convert(string s)
 {
-    string val = s.substr(1);
-    int new_val = atoi(val.c_str());
-    return new_val;
+    int new_val;
+    if(isdigit(s[0]))
+    {
+        new_val = atoi(s.c_str());
+        return new_val;
+    }
+    else if(isalpha(s[0]))
+    {
+        string val = s.substr(1);
+        new_val = atoi(val.c_str());
+        return new_val;
+    }
+    // An error message can be added here...
+    // "the value entered is invalid, + string s"
+}
+
+void Program::execute(){};
+
+void Program::get(string r, string m)
+{
+  int reg = convert(r);
+  int memo = convert(m);
+  assert(isValidRegister(reg));
+  assert(isValidMemory(memo));
+  pairRegisters[reg].second = pairMemory[memo].second;
+  pairRegisters[reg].first = pairMemory[memo].first;
+}
+
+void Program::getu(int pos, int val) // new name "setR"
+{
+    pairRegisters[pos].second = val;
+    pairRegisters[pos].first = false;
 }
 
 /*
@@ -30,22 +84,15 @@ void Program::execute()
 {
 
 }
-// Data movement >>> add Program before every function
-void Program::get(string r, string m)
-{
-  string reg; // = // convert string
-  string memo; //= // convert string
-  assert(reg >= 0 && reg < REGISTER_CAPACITY);
-  assert(memo >= 0 && memo < MEMORY_CAPACITY);
-  registers[reg] = memo[m];
-}
+
+
 void Program::set(string m, string r);
 {
- // string reg = // convert string
- // string memo = // convert string
-  assert(reg >= 0 && reg < REGISTER_CAPACITY);
-  assert(memo >= 0 && memo < MEMORY_CAPACITY);
-  memory[memo] = register[reg];
+ // string reg = convert(r);
+ // string memo = convert(m);
+  assert(isValidRegisters);
+  assert(isValidMemory);
+  pairRegisters[memo].second = register[reg];
 }
 
 void Program::swap(string r1, string r2)
@@ -285,6 +332,14 @@ void Program::clearm(string m1)
     assert(memory_index < MEMORY_CAPACITY);
     memory[memory_index] = 0;
 }
+
+void Program::halt()
+{
+    exit(0);
+}
+*/
+
+
 bool Program::isValidMemory(int val)
 {
     if(val < used_memory)
@@ -313,8 +368,3 @@ bool Program::isAvailableRegister(int val)
     else
         return false;
 }
-void Program::halt()
-{
-    exit(0);
-}
-*/
