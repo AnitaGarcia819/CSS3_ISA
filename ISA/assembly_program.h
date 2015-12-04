@@ -2,21 +2,38 @@
 #define ASSEMBLY_PROGRAM_H
 #include <iostream>
 #include <cstddef>
+#include <unordered_map>
+#include <vector>
+#include <set>
+#include <string>
+#include <cstdlib>
+#include <cctype>
+#include <cstring>
 using namespace std;
+
 class Program{
 
     private:
         static const size_t REGISTER_CAPACITY = 16;
         static const size_t MEMORY_CAPACITY = 32;
         unsigned int used_memory;
-        unsigned int used_int;
-        int registers[REGISTER_CAPACITY];
-        int memory[MEMORY_CAPACITY];
+        unsigned int used_register;
+        pair<bool,int> pairRegisters[REGISTER_CAPACITY];
+        pair<bool,int> pairMemory[MEMORY_CAPACITY];
+
+        set<int> so;
 
     public:
+        unordered_map<string, vector<string> > functions;
         Program();
-        void convert(string s);
+        int convert(string s);
         void execute();
+        void executeFunction(string opcode);
+        void executeFunction(string opcode, string address1);
+        void executeFunction(string opcode, string address1, string address2);
+        void executeFunction(string opcode, string address1, string address2, string address3);
+        void locateFunctionToExecute(string opcode);
+        int numberOfAddresses(string opcode);
         // Data Movement
         void get ( string r, string m );    // may be changed to bool for error tracking
         void set ( string m, string r );
@@ -43,13 +60,19 @@ class Program{
         void in(string register_address);
         void out(string register_address);
         void goTo(string func_name);
-        void whif(string func_name);
+        void whif(string func_name, string r1);
 
         // Special Opcode
         void peek(string memory_address);
-        void sort(string m1, string num);
+        void sort_array(string m1, string num);
         void clearr(string r1);
         void clearm(string m1);
         void halt();
+
+
+        string toLower(string str);
 };
+
+
+
 #endif // ASSEMBLY_PROGRAM_H
