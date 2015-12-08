@@ -2,7 +2,15 @@
 #define ASSEMBLY_PROGRAM_H
 #include <iostream>
 #include <cstddef>
+#include <unordered_map>
+#include <vector>
+#include <set>
+#include <string>
+#include <cstdlib>
+#include <cctype>
+#include <cstring>
 using namespace std;
+
 class Program{
 
     private:
@@ -16,19 +24,26 @@ class Program{
         pair<bool, int> pairMemory[MEMORY_CAPACITY];
 
     public:
+        unordered_map<string, vector<string> > functions;
         Program();
         void setMemo(int pos, int val);
         void setReg(int pos, int val);
         pair<bool, int> retPairM(int pos);
         pair<bool, int> retPairR(int pos);
-
         void getu(int pos, int val);
         void receive(string r, int val);
         int convert(string s);
         void execute();
+        void executeFunction(string opcode);
+        void executeFunction(string opcode, string address1);
+        void executeFunction(string opcode, string address1, string address2);
+        void executeFunction(string opcode, string address1, string address2, string address3);
+        void locateFunctionToExecute(string opcode);
+        int numberOfAddresses(string opcode);
         // Data Movement
         void get ( string r, string m );    // may be changed to bool for error tracking
         void set ( string m, string r );
+        void setr (string r1,string entry);
         //Summary: sets value from regsiter into memory address;
         void swap ( string r1, string r2 );
 
@@ -53,15 +68,16 @@ class Program{
         void in(string register_address);
         void out(string register_address);
         void goTo(string func_name);
-        void whif(string func_name);
+        void whif(string func_name, string r1);
 
         // Special Opcode
         void peek(string memory_address);
-        void sort(string m1, string num);
+        void sort_array(string m1, string num);
         void clearr(string r1);
         void clearm(string m1);
         void halt();
 
+        string toLower(string str);
 
         bool isValidMemory(unsigned int val);
         // Precondition: Val represents an index location.
@@ -83,4 +99,6 @@ class Program{
         // Postcondition: returns true or false depending if its available or not.
 
 };
+
+
 #endif // ASSEMBLY_PROGRAM_H
