@@ -4,14 +4,14 @@
 	<cassert>
 	"assembly_program.h"
 
-1449016938 c:\users\anarts\documents\github\css3_isa\isa\assembly_program.h
+1449264066 c:\users\anarts\documents\github\css3_isa\isa\assembly_program.h
 	<iostream>
 	<cstddef>
 
 1449011924 source:c:\users\anarts\documents\github\css3_isa\isa\assemblydriver.cpp
 	"assembly_program.h"
 
-1449198735 source:/Users/anitagarcia/CSS3_ISA/ISA/assembly_program.cpp
+1449618714 source:/Users/anitagarcia/CSS3_ISA/ISA/assembly_program.cpp
 	<fstream>
 	<cassert>
 	<set>
@@ -19,9 +19,10 @@
 	<cctype>
 	<cstring>
 	<cstdlib>
+	<cmath>
 	"assembly_program.h"
 
-1449197471 /Users/anitagarcia/CSS3_ISA/ISA/assembly_program.h
+1449617814 /Users/anitagarcia/CSS3_ISA/ISA/assembly_program.h
 	<iostream>
 	<cstddef>
 	<unordered_map>

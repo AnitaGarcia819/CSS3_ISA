@@ -43,6 +43,7 @@ class Program{
         // Data Movement
         void get ( string r, string m );    // may be changed to bool for error tracking
         void set ( string m, string r );
+        void setr (string r1,string entry);
         //Summary: sets value from regsiter into memory address;
         void swap ( string r1, string r2 );
 
@@ -78,21 +79,21 @@ class Program{
 
         string toLower(string str);
 
-        bool isValidMemory(int val);
+        bool isValidMemory(unsigned int val);
         // Precondition: Val represents an index location.
         // Summary: checking to see if that memory exists
         // Postcondition: returns true or false depending if its valid.
-        bool isValidRegister(int val);
+        bool isValidRegister(unsigned int val);
         // Precondition: Val represents an index location.
         // Summary: checking to see if that register exists
         // Postcondition: returns true or false depending if its valid.
 
-        bool isAvailableMemory(int val);
+        bool isAvailableMemory(unsigned int val);
         // Precondition: val represents an index location.
         // Summary: Checks to see if pair.first is available (true)
         // Postcondition: returns true or false depending if its available or not.
 
-        bool isAvailableRegister(int val);
+        bool isAvailableRegister(unsigned int val);
         // Precondition: val represents an index location.
         // Summary: checks to see if pair.first is available(true)
         // Postcondition: returns true or false depending if its available or not.
