@@ -14,18 +14,24 @@ using namespace std;
 class Program{
 
     private:
+        // array sizes
         static const size_t REGISTER_CAPACITY = 16;
         static const size_t MEMORY_CAPACITY = 32;
+        //keeps track of amount used memory and registers
         unsigned int used_memory;
-        unsigned int used_register;
-        pair<bool,int> pairRegisters[REGISTER_CAPACITY];
-        pair<bool,int> pairMemory[MEMORY_CAPACITY];
-
-        set<int> so;
+        unsigned int used_registers;
+        pair<bool, int> pairRegisters[REGISTER_CAPACITY];
+        pair<bool, int> pairMemory[MEMORY_CAPACITY];
 
     public:
         unordered_map<string, vector<string> > functions;
         Program();
+        void setMemo(int pos, int val);
+        void setReg(int pos, int val);
+        pair<bool, int> retPairM(int pos);
+        pair<bool, int> retPairR(int pos);
+        void getu(int pos, int val);
+        void receive(string r, int val);
         int convert(string s);
         void execute();
         void executeFunction(string opcode);
@@ -37,6 +43,7 @@ class Program{
         // Data Movement
         void get ( string r, string m );    // may be changed to bool for error tracking
         void set ( string m, string r );
+        //Summary: sets value from regsiter into memory address;
         void swap ( string r1, string r2 );
 
         // Arithmetic
@@ -69,10 +76,28 @@ class Program{
         void clearm(string m1);
         void halt();
 
-
         string toLower(string str);
-};
 
+        bool isValidMemory(int val);
+        // Precondition: Val represents an index location.
+        // Summary: checking to see if that memory exists
+        // Postcondition: returns true or false depending if its valid.
+        bool isValidRegister(int val);
+        // Precondition: Val represents an index location.
+        // Summary: checking to see if that register exists
+        // Postcondition: returns true or false depending if its valid.
+
+        bool isAvailableMemory(int val);
+        // Precondition: val represents an index location.
+        // Summary: Checks to see if pair.first is available (true)
+        // Postcondition: returns true or false depending if its available or not.
+
+        bool isAvailableRegister(int val);
+        // Precondition: val represents an index location.
+        // Summary: checks to see if pair.first is available(true)
+        // Postcondition: returns true or false depending if its available or not.
+
+};
 
 
 #endif // ASSEMBLY_PROGRAM_H
