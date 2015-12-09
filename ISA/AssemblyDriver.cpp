@@ -1,7 +1,4 @@
 #include "assembly_program.h"
-<<<<<<< HEAD
-
-=======
 #include <vector>
 #include <unordered_map>
 using namespace std;
@@ -28,4 +25,4 @@ int main()
     */
     return 0;
 }
->>>>>>> 6af581e23b38afd2141bca79657ebe250e69b664
+
