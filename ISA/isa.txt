@@ -1,2 +1,11 @@
-ORG 100
-LOAD X
+# this is a comment
+# and again
+# just for testing
+#*LOOP4
+#        IN R00
+#        INCR R00
+#        IN R01
+#        GOTO LOOK
+#*LOOK3
+#        IN R03
+#        OUT R03

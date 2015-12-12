@@ -20,10 +20,11 @@ class Program{
         //keeps track of amount used memory and registers
         unsigned int used_memory;
         unsigned int used_registers;
-        pair<bool, int> pairRegisters[REGISTER_CAPACITY];
         pair<bool, int> pairMemory[MEMORY_CAPACITY];
 
     public:
+        pair<bool, int> pairRegisters[REGISTER_CAPACITY];
+
         unordered_map<string, vector<string> > functions;
         Program();
         void setMemo(int pos, int val);
@@ -33,6 +34,8 @@ class Program{
         void getu(int pos, int val);
         void receive(string r, int val);
         int convert(string s);
+        void runLine(string line);
+        void cacheFunctions();
         void execute();
         void executeFunction(string opcode);
         void executeFunction(string opcode, string address1);
@@ -73,6 +76,7 @@ class Program{
         // Special Opcode
         void peek(string memory_address);
         void sort_array(string m1, string num);
+        void clearallr();
         void clearr(string r1);
         void clearm(string m1);
         void halt();
