@@ -1,11 +1,19 @@
-# this is a comment
-# and again
-# just for testing
-#*LOOP4
-#        IN R00
-#        INCR R00
-#        IN R01
-#        GOTO LOOK
-#*LOOK3
-#        IN R03
-#        OUT R03
+CLEARALLR
+IN R00
+SET M00 R00
+SETR R01 0
+SETR R02 1
+SETR R04 0
+SET M01 R04
+
+*LOOP7
+IN R03
+ADDR R01 R01 R03
+SUBR R00 R00 R02
+SET M00 R00
+GREAT R05 M00 M01
+OUT R05
+WHIF R05 LOOP
+#SET M00 R01
+OUT R01
+#CLEARALLR

@@ -20,9 +20,10 @@ class Program{
         //keeps track of amount used memory and registers
         unsigned int used_memory;
         unsigned int used_registers;
-        pair<bool, int> pairMemory[MEMORY_CAPACITY];
+
 
     public:
+        pair<bool, int> pairMemory[MEMORY_CAPACITY];
         pair<bool, int> pairRegisters[REGISTER_CAPACITY];
 
         unordered_map<string, vector<string> > functions;
@@ -63,15 +64,15 @@ class Program{
         void incr(string r1); //increment r1(index);
         void decr(string r1);
         void neg(string r1); //negates all values in register
-        bool less(string r1, string m1, string m2);
-        bool great(string r1, string m1, string m2);
-        bool equal(string r1, string m1, string m2);
+        void less(string r1, string m1, string m2);
+        void great(string r1, string m1, string m2);
+        void equal(string r1, string m1, string m2);
 
         // Transfer Control
         void in(string register_address);
         void out(string register_address);
         void goTo(string func_name);
-        void whif(string func_name, string r1);
+        void whif(string r1, string func_name);
 
         // Special Opcode
         void peek(string memory_address);
@@ -101,6 +102,7 @@ class Program{
         // Precondition: val represents an index location.
         // Summary: checks to see if pair.first is available(true)
         // Postcondition: returns true or false depending if its available or not.
+        void internalDisplay();
 
 };
 

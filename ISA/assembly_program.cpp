@@ -129,7 +129,9 @@ void Program::execute()
                // getline(fin, line);
                // cout << "Line (execute) " << line << endl;
                 //cout << "Line Len (execute) " << line.length() << endl;
+                cout << "##INSTRUCTION## " << line << endl;
                 runLine(line);
+                internalDisplay();
              }
         }
     }
@@ -181,9 +183,23 @@ void Program::runLine(string line)
                         executeFunction(opcode, address1, address2, address3);
                         break;
                     case 2:
-                        address1 = line.substr(opcode_length + 1, 3);
-                        address2 = line.substr(opcode_length + 5, 3);
+                        if(toLower(opcode) == "whif")
+                        {
+                            address1 = line.substr(opcode_length + 1, 3);
+                            address2 = line.substr(opcode_length + 5);
+                        }
+                        else if(toLower(opcode) == "setr")
+                        {
+                            address1 = line.substr(opcode_length + 1, 3);
+                            address2 = line.substr(opcode_length + 5);
+                        }
+                        else
+                        {
+                            address1 = line.substr(opcode_length + 1, 3);
+                            address2 = line.substr(opcode_length + 5, 3);
+                        }
                         executeFunction(opcode, address1, address2);
+
                         break;
                     case 1:
                         {
@@ -200,9 +216,9 @@ void Program::runLine(string line)
 }
 void Program::executeFunction(string opcode)
 {
-    if(opcode == "halt")
+    if(toLower(opcode) == "halt")
        exit(0);
-    else
+    else if(toLower(opcode) == "clearallr")
         clearallr();
 
 }
@@ -242,7 +258,11 @@ void Program::executeFunction(string opcode, string address1, string address2)
     else if(toLower(opcode) == "move")
         move(address1, address2);
     else if(toLower(opcode) == "whif")
-        whif(address1, address2);
+    {
+        cout << "EXECUTE FUNC WHIF " << endl;
+          whif(address1, address2);
+    }
+
     else if(toLower(opcode) == "sort")
         sort_array(address1, address2);
 }
@@ -276,6 +296,8 @@ int Program::numberOfAddresses(string opcode)
         // OPCODE w/ zero addresses
         if(toLower(opcode) == "halt")
            return 0;
+        if(toLower(opcode) == "clearallr")
+            return 0;
 
         // OPCODE w/ one addresses
         else if(toLower(opcode) == "incr")
@@ -301,6 +323,8 @@ int Program::numberOfAddresses(string opcode)
         if(toLower(opcode) == "get")
              return 2;
         else if(toLower(opcode) == "set")
+            return 2;
+        else if(toLower(opcode) == "setr")
             return 2;
         else if(toLower(opcode) == "swap")
              return 2;
@@ -349,6 +373,7 @@ void Program::setr(string r1,string entry) // new name "setR"
 {
     int reg_index = convert(r1);
     int value = convert(entry);
+    cout << "!!!VALUE!!" << value << endl;
     if(isValidRegister(reg_index))
     {
         pairRegisters[reg_index].second = value;
@@ -363,8 +388,8 @@ void Program::set(string m, string r)
     if(isValidRegister(reg_index)
          && isValidMemory(memory_index))
     {
-        pairRegisters[memory_index].second = pairRegisters[reg_index].second;
-        pairRegisters[memory_index].first = false;
+        pairMemory[memory_index].second = pairRegisters[reg_index].second;
+        pairMemory[memory_index].first = false;
     }
 }
 void Program::swap(string r1, string r2) // <
@@ -549,10 +574,10 @@ void Program::neg(string r1) //negates all values in register
     else
         cout << "Register: " << val1 << " not available or valid " << endl;
 }
-bool Program::less(string r1, string m1, string m2)
+void Program::less(string r1, string m1, string m2)
 {
 	//convert m1, and m2 to ints
-	bool isLess;
+    int register_index = convert(r1);
     int memory1_index = convert( m1);
 	int memory2_index = convert(m2);
 	//int register_index = convert(r1);
@@ -563,18 +588,17 @@ bool Program::less(string r1, string m1, string m2)
 	if(isValidMemory(memory1_index) && isValidMemory(memory1_index))
     {
         if( pairMemory[memory1_index].second < pairMemory[memory2_index].second)
-            isLess = true;
+            pairRegisters[register_index].second = 1;
+        else
+            pairRegisters[register_index].second = 0;
     }
 	//you need to ask  if you are storing the value here in this function or just returning a boolean.
 	//assert(isAvailableRegister(register_index));
-	else
-		isLess = false;
-    return isLess;
 }
-bool Program::great(string r1, string m1, string m2)
+void Program::great(string r1, string m1, string m2)
 {
 	//convert m1, and m2 to ints
-	bool isGreater;
+	int register_index = convert(r1);
 	int memory1_index = convert( m1);
 	int memory2_index = convert(m2);
 	//int register_index = convert(r1);
@@ -586,20 +610,18 @@ bool Program::great(string r1, string m1, string m2)
 	if(isValidMemory(memory1_index) && isValidMemory(memory2_index))
     {
         if( pairMemory[memory1_index].second > pairMemory[memory2_index].second)
-            isGreater = true;
+            pairRegisters[register_index].second = 1;
+        else
+            pairRegisters[register_index].second = 0;
     }
 	//you need to ask  if you are storing the value here in this function or just returning a boolean.
 	//assert(isAvailableRegister(register_index));
-
-	else
-		isGreater = false;
-    return isGreater;
 }
 
-bool Program::equal(string r1, string m1, string m2)
+void Program::equal(string r1, string m1, string m2)
 {
 	//convert m1, and m2 to ints
-	bool isEqual;
+    int register_index = convert(r1);
 	int memory1_index = convert( m1);
 	int memory2_index = convert(m2);
 	//assert(isAvailableMemory(memory1_index));
@@ -607,11 +629,11 @@ bool Program::equal(string r1, string m1, string m2)
 	if(isAvailableMemory(memory1_index) && isValidMemory(memory2_index))
     {
         if( pairMemory[memory1_index].second == pairMemory[memory2_index].second)
-                isEqual = true;
+            pairRegisters[register_index].second = 1;
+        else
+            pairRegisters[register_index].second = 0;
     }
-    else
-        isEqual = false;
-    return isEqual;
+
 }
 
 // Transfer Control
@@ -678,7 +700,51 @@ void Program::goTo(string func_name)
          // TODO: check to see if opcode is a function
                 number_of_addresses = numberOfAddresses(opcode);
                 cout << "NUM OF ADD " << number_of_addresses << endl;
-                switch(number_of_addresses)
+                 switch(number_of_addresses)
+                {
+                    case 3:
+                        //cout << "Line:(case) " << line << endl;
+                        address1 = line.substr(opcode_length + 1, 3);
+                        //cout << "Address 1: " << address1 << endl;
+                        address2 = line.substr(opcode_length + 5, 3);
+                        //cout << "Address 2: " << address2 << endl;
+                        address3 = line.substr(opcode_length + 9, 3);
+                        //cout << "Address 3: " << address3 << endl;
+                        executeFunction(opcode, address1, address2, address3);
+                        break;
+                    case 2:
+                        if(toLower(opcode) == "whif")
+                        {
+                            address1 = line.substr(opcode_length + 1, 3);
+                            address2 = line.substr(opcode_length + 5);
+                        }
+                        else if(toLower(opcode) == "setr")
+                        {
+                            address1 = line.substr(opcode_length + 1, 3);
+                            address2 = line.substr(opcode_length + 5);
+                        }
+                        else
+                        {
+                            address1 = line.substr(opcode_length + 1, 3);
+                            address2 = line.substr(opcode_length + 5, 3);
+                        }
+                        executeFunction(opcode, address1, address2);
+
+                        break;
+                    case 1:
+                        {
+                           // cout << "CASE 1: " << opcode << endl;
+                            address1 = line.substr(opcode_length + 1, 3);
+                            executeFunction(opcode, address1);
+                        }
+
+                        break;
+                    case 0:
+                        executeFunction(opcode);
+                        break;
+                }
+
+              /*  switch(number_of_addresses)
                 {
                     case 3:
                         cout << "Line:(case) " << line << endl;
@@ -702,16 +768,24 @@ void Program::goTo(string func_name)
                     case 0:
                         executeFunction(opcode);
                         break;
-                }
+                }*/
     }
 }
-void Program::whif(string func_name, string reg)
+void Program::whif(string reg, string func_name)
 {
+    cout << "WHIF (whif)" << endl;
+    cout << "REG (being passed in)" << reg << endl;
     int register_index = convert(reg);
+    cout << "REG_INDEX (whif)" << register_index << endl;
     // If it's zero, it will proceed with the .txt file
     // If it's one, it will locate function and print
     if(pairRegisters[register_index].second == 1)
+    {
+         cout << "whif goTo" << endl;
          goTo(func_name);
+    }
+    else
+        cout << "PROBLEM" << endl;
 }
 // Special Opcode
 void Program::peek(string memory_address)
@@ -750,6 +824,7 @@ void Program::sort_array(string m1, string num)
 }
 void Program::clearallr()
 {
+    cout << "CLEARALL" << endl;
     for(unsigned int i = 0; i <REGISTER_CAPACITY; i++)
     {
         pairRegisters[i] = make_pair(true, 0);
@@ -836,4 +911,16 @@ pair<bool, int> Program::retPairR(int pos)
     aPair = pairRegisters[pos];
     return aPair;
 }
-
+void Program::internalDisplay()
+{
+    cout << "= = = = REG = = = = " << endl;
+    for (int i = 0; i < 16; i++)
+    {
+        cout << "REG @ " << i << " :"<< pairRegisters[i].second << endl;
+     }
+         cout << "= = = = MEM = = = = " << endl;
+    for (int i = 0; i < 32; i++)
+    {
+        cout << "MEM @ " << i << " :"<< pairMemory[i].second << endl;
+     }
+}

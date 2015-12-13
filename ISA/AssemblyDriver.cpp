@@ -8,6 +8,8 @@ int main()
 
     program.cacheFunctions();
     program.execute();
+    cout << "MEMORY 0" << program.pairMemory[0].second << endl;
+    cout << "MEMORY 1" << program.pairMemory[1].second << endl;
 
     /*
     program.setr("R01", "5");
