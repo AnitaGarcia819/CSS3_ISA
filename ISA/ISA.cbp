@@ -35,6 +35,7 @@
 		<Unit filename="assembly_program.cpp" />
 		<Unit filename="assembly_program.h" />
 		<Unit filename="isa.txt" />
+		<Unit filename="isa2.txt" />
 		<Extensions>
 			<code_completion />
 			<envvars />

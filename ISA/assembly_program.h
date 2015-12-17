@@ -1,3 +1,10 @@
+/*
+    Authors: Anita Garcia, Ana Perez, Eduardo
+    Created: December 17th, 2015
+    Summary: Creates a class that provides
+             the functionality for the simulator
+             for the 'JAM' Instruction Set Architecture
+*/
 #ifndef ASSEMBLY_PROGRAM_H
 #define ASSEMBLY_PROGRAM_H
 #include <iostream>
@@ -64,9 +71,9 @@ class Program{
         void incr(string r1); //increment r1(index);
         void decr(string r1);
         void neg(string r1); //negates all values in register
-        void less(string r1, string m1, string m2);
-        void great(string r1, string m1, string m2);
-        void equal(string r1, string m1, string m2);
+        void less(string r1, string m1, string r2);
+        void great(string r1, string m1, string r2);
+        void equal(string r1, string m1, string r2);
 
         // Transfer Control
         void in(string register_address);
