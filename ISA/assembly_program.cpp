@@ -62,7 +62,7 @@ void Program::cacheFunctions()
         func_name = "";
         // Read in opcode
         getline(fin, line);
-        if(line[0] != '#')
+        if(line[0] != '#' )
         {
              // Check if it's a function
              if(line[0] == '*')
@@ -96,10 +96,11 @@ void Program::cacheFunctions()
                 p.second = vec;
 
                 functions.insert(p);
-
+                /*
                 vector<string>::iterator it;
                 for(it = vec.begin(); it != vec.end(); it++)
                     cout << "VEC " << *it << endl;
+                */
              }
         }
     }
@@ -120,7 +121,7 @@ void Program::execute()
     {
         // Read in opcode
         getline(fin, line);
-        if(line[0] != '#')
+        if(line[0] != '#' && line.length() > 0)
         {
              // Check if it's a function
              if(line[0] != '*')
@@ -130,6 +131,7 @@ void Program::execute()
                // cout << "Line (execute) " << line << endl;
                 //cout << "Line Len (execute) " << line.length() << endl;
                 cout << "##INSTRUCTION## " << line << endl;
+                cout << "--- " << line.length() << endl;
                 runLine(line);
                 internalDisplay();
              }
@@ -824,7 +826,7 @@ void Program::sort_array(string m1, string num)
 }
 void Program::clearallr()
 {
-    cout << "CLEARALL" << endl;
+    // cout << "CLEARALL" << endl;
     for(unsigned int i = 0; i <REGISTER_CAPACITY; i++)
     {
         pairRegisters[i] = make_pair(true, 0);
@@ -916,11 +918,17 @@ void Program::internalDisplay()
     cout << "= = = = REG = = = = " << endl;
     for (int i = 0; i < 16; i++)
     {
-        cout << "REG @ " << i << " :"<< pairRegisters[i].second << endl;
+        if(i % 4 == 0 )
+            cout << endl;
+        cout << "REG @ " << i << " :"<< pairRegisters[i].second << "\t";
      }
+     cout << endl;
          cout << "= = = = MEM = = = = " << endl;
     for (int i = 0; i < 32; i++)
     {
-        cout << "MEM @ " << i << " :"<< pairMemory[i].second << endl;
+        if(i % 4 == 0 )
+            cout << endl;
+        cout << "MEM @ " << i << " :"<< pairMemory[i].second << "\t";
      }
+     cout << endl;
 }
